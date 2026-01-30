@@ -213,3 +213,4 @@ Web検索や学習系コンテンツ経由での自然流入を想定してい�
 
 #### テスト
 - RSpec（モデル／システムスペック）
+<!-- Submitted via PR for RUNTEQ README resubmission -->
