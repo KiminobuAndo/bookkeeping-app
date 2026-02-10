@@ -230,3 +230,15 @@ Web検索や学習系コンテンツ経由での自然流入を想定してい�
 
 #### テスト
 - RSpec（モデル／システムスペック）
+
+
+<!--
+## 画面遷移図（Figma）
+
+Figma：
+https://www.figma.com/design/HP4F5Peux4gMDSelDp3MmH/%E7%B0%BF%E8%A8%98%E3%82%A2%E3%83%97%E3%83%AA?node-id=0-1&p=f&t=kToX5cUt1Co7UCdg-0
+
+※ 画面遷移図課題提出用
+※ MVPで実装予定の全画面を反映
+※ 画面間の遷移は矢印で明示
+-->
