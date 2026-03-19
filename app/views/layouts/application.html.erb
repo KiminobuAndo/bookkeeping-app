@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Myapp" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body>
+    <nav class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <%= link_to "簿記練習", root_path, class: "text-lg font-bold text-gray-900" %>
+      <div class="flex items-center gap-4 text-sm">
+        <% if user_signed_in? %>
+          <span class="text-gray-700"><%= current_user.name %> さん</span>
+          <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
+              class: "text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer" %>
+        <% else %>
+          <%= link_to "ログイン", new_user_session_path, class: "text-blue-600 hover:underline" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "text-blue-600 hover:underline" %>
+        <% end %>
+      </div>
+    </nav>
+
+    <% if notice %>
+      <p class="bg-green-100 text-green-800 px-4 py-2 text-sm"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="bg-red-100 text-red-800 px-4 py-2 text-sm"><%= alert %></p>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>
