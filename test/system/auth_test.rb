@@ -11,7 +11,7 @@ class AuthTest < ApplicationSystemTestCase
     fill_in "パスワード（確認）", with: "password"
     click_on "登録する"
 
-    assert_text "Welcome! You have signed up successfully."
+    assert_text "アカウント登録が完了しました。"
   end
 
   test "user can log in" do
@@ -24,7 +24,7 @@ class AuthTest < ApplicationSystemTestCase
     fill_in "パスワード", with: "password"
     click_on "ログイン"
 
-    assert_text "Signed in successfully."
+    assert_text "ログインしました。"
   end
 
   test "home page is accessible without login" do
