@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= content_for(:title) || "Bookkeeping Learning - プロフェッショナルな簿記学習" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
@@ -15,23 +15,42 @@
     <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec5b13",
+              "navy-accent": "#1e293b",
+              "background-light": "#f8f6f6",
+              "background-dark": "#221610",
+            },
+            fontFamily: {
+              "display": ["Public Sans", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
   </head>
 
-  <body>
-    <nav class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-      <%= link_to "簿記練習", root_path, class: "text-lg font-bold text-gray-900" %>
-      <div class="flex items-center gap-4 text-sm">
-        <% if user_signed_in? %>
-          <span class="text-gray-700"><%= current_user.name %> さん</span>
-          <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
-              class: "text-gray-600 hover:text-gray-900 bg-transparent border-none cursor-pointer" %>
-        <% else %>
-          <%= link_to "ログイン", new_user_session_path, class: "text-blue-600 hover:underline" %>
-          <%= link_to "新規登録", new_user_registration_path, class: "text-blue-600 hover:underline" %>
-        <% end %>
-      </div>
-    </nav>
-
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
     <% if notice %>
       <p class="bg-green-100 text-green-800 px-4 py-2 text-sm"><%= notice %></p>
     <% end %>

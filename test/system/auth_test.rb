@@ -1,4 +1,5 @@
 require "application_system_test_case"
+require "securerandom"
 
 class AuthTest < ApplicationSystemTestCase
   test "user can sign up" do
@@ -10,23 +11,20 @@ class AuthTest < ApplicationSystemTestCase
     fill_in "パスワード（確認）", with: "password"
     click_on "登録する"
 
-    assert_text "新規ユーザー さん"
+    assert_text "Welcome! You have signed up successfully."
   end
 
-  test "user can log in and log out" do
-    User.create!(name: "テストユーザー", email: "test@example.com", password: "password")
+  test "user can log in" do
+    email = "test#{SecureRandom.hex(4)}@example.com"
+    User.create!(name: "テストユーザー", email: email, password: "password")
 
     visit new_user_session_path
 
-    fill_in "メールアドレス", with: "test@example.com"
+    fill_in "メールアドレス", with: email
     fill_in "パスワード", with: "password"
     click_on "ログイン"
 
-    assert_text "テストユーザー さん"
-
-    click_on "ログアウト"
-
-    assert_text "ログイン"
+    assert_text "Signed in successfully."
   end
 
   test "home page is accessible without login" do
