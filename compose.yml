@@ -27,11 +27,19 @@ services:
       - node_modules:/myapp/node_modules
     environment:
       TZ: Asia/Tokyo
+      SELENIUM_REMOTE_URL: http://selenium:4444
+      CAPYBARA_SERVER_HOST: "0.0.0.0"
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
+      selenium:
+        condition: service_started
+  selenium:
+    image: selenium/standalone-chromium
+    ports:
+      - "4444:4444"
 volumes:
   bundle_data:
   postgresql_data:
