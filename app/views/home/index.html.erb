@@ -13,7 +13,14 @@
     </nav>
     %>
     <div class="flex items-center gap-4">
-      <%= link_to "ログイン", new_user_session_path, class: "text-sm font-bold text-navy-accent dark:text-slate-300" %>
+      <% if user_signed_in? %>
+        <span class="text-sm text-slate-600 dark:text-slate-300"><%= current_user.name %></span>
+        <%= button_to "ログアウト", destroy_user_session_path,
+            method: :delete,
+            class: "text-sm font-bold text-navy-accent dark:text-slate-300 cursor-pointer bg-transparent border-0 p-0" %>
+      <% else %>
+        <%= link_to "ログイン", new_user_session_path, class: "text-sm font-bold text-navy-accent dark:text-slate-300" %>
+      <% end %>
     </div>
   </div>
 </header>
