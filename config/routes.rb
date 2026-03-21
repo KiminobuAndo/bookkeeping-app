@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   }
   root "home#index"
 
+  get "dashboard" => "dashboard#index", as: :dashboard
+  get "courses/:course_id/quiz/new" => "dashboard#start_quiz", as: :new_quiz
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

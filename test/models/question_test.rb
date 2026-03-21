@@ -2,7 +2,7 @@ require "test_helper"
 
 class QuestionTest < ActiveSupport::TestCase
   setup do
-    @course = Course.create!(title: "現金の仕訳")
+    @course = Course.create!(name: "現金の仕訳")
   end
 
   test "valid with required attributes" do
