@@ -22,7 +22,6 @@ class DashboardTest < ApplicationSystemTestCase
     course = Course.create!(name: "借方・貸方 現金勘定どっち？？", is_published: true)
 
     sign_in_as(user)
-    visit dashboard_path
 
     assert_text course.name
   end
@@ -36,7 +35,6 @@ class DashboardTest < ApplicationSystemTestCase
     Course.create!(name: "未公開コース", is_published: false)
 
     sign_in_as(user)
-    visit dashboard_path
 
     assert_no_text "未公開コース"
   end
@@ -52,6 +50,7 @@ class DashboardTest < ApplicationSystemTestCase
     visit new_user_session_path
     fill_in "メールアドレス", with: user.email
     fill_in "パスワード", with: "password"
-    click_on "ログイン"
+    click_button "ログイン"
+    assert_current_path dashboard_path
   end
 end
