@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   get "dashboard" => "dashboard#index", as: :dashboard
-  get "courses/:course_id/quiz/new" => "dashboard#start_quiz", as: :new_quiz
+  get "quiz/start" => "dashboard#start_quiz", as: :start_quiz
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
