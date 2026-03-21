@@ -27,6 +27,35 @@ class AuthTest < ApplicationSystemTestCase
     assert_text "ログインしました。"
   end
 
+  test "login fails with wrong password" do
+    email = "test#{SecureRandom.hex(4)}@example.com"
+    User.create!(name: "テストユーザー", email: email, password: "password")
+
+    visit new_user_session_path
+
+    fill_in "メールアドレス", with: email
+    fill_in "パスワード", with: "wrongpassword"
+    click_on "ログイン"
+
+    assert_text "メールアドレスまたはパスワードが違います。"
+  end
+
+  test "user can log out" do
+    email = "test#{SecureRandom.hex(4)}@example.com"
+    User.create!(name: "ログアウトユーザー", email: email, password: "password")
+
+    visit new_user_session_path
+
+    fill_in "メールアドレス", with: email
+    fill_in "パスワード", with: "password"
+    click_on "ログイン"
+
+    click_on "ログアウト"
+
+    assert_text "ログアウトしました。"
+    assert_current_path root_path
+  end
+
   test "home page is accessible without login" do
     visit root_path
     assert_current_path root_path
