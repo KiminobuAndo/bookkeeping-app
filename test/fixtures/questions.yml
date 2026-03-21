@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  course: one
-  prompt: MyText
-  correct_side: MyString
+  course: cash_course
+  prompt: 商品を現金で購入した。現金は借方・貸方どちら？
+  correct_side: debit
 
 two:
-  course: two
-  prompt: MyText
-  correct_side: MyString
+  course: cash_course
+  prompt: 売上代金を現金で受け取った。現金は借方・貸方どちら？
+  correct_side: debit
