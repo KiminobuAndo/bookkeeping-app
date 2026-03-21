@@ -1,5 +1,6 @@
 class Question < ApplicationRecord
   belongs_to :course
+  has_many :answers, dependent: :destroy
 
   enum :correct_side, { debit: "debit", credit: "credit" }
 
