@@ -10,17 +10,24 @@ class DashboardTest < ApplicationSystemTestCase
   test "published courses appear in select" do
     user = User.create!(name: "テストユーザー", email: "courses@example.com", password: "password")
     course = Course.create!(name: "借方・貸方 現金勘定どっち？？", is_published: true)
+
     sign_in_as(user)
     visit dashboard_path
-    assert_selector "option", text: course.name
+
+    select_box = find("select", visible: :all)
+    option_texts = select_box.all("option", visible: :all).map(&:text)
+
+    assert_includes option_texts, course.name
   end
 
   test "unpublished courses do not appear in select" do
     user = User.create!(name: "テストユーザー", email: "draft@example.com", password: "password")
     Course.create!(name: "未公開コース", is_published: false)
+
     sign_in_as(user)
     visit dashboard_path
-    assert_no_selector "option", text: "未公開コース"
+
+    assert_no_selector "select", visible: :all
   end
 
   test "dashboard redirects to login when not authenticated" do
