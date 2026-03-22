@@ -58,4 +58,19 @@ class AnswerTest < ActiveSupport::TestCase
     assert_not answer.valid?
     assert answer.errors[:input_amount].any?
   end
+
+  test "amount_correct? returns true when input_amount matches correct_amount" do
+    answer = answers(:correct_answer)
+    assert answer.amount_correct?
+  end
+
+  test "amount_correct? returns false when input_amount does not match correct_amount" do
+    answer = Answer.new(user: users(:one), question: questions(:one), selected_side: :debit, input_amount: 999)
+    assert_not answer.amount_correct?
+  end
+
+  test "amount_correct? returns true when question has no correct_amount" do
+    answer = Answer.new(user: users(:one), question: questions(:two), selected_side: :debit)
+    assert answer.amount_correct?
+  end
 end
