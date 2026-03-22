@@ -1,0 +1,39 @@
+<%# ローカル変数: result_detail, index %>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 mb-3">
+  <div class="flex items-start justify-between gap-3 mb-3">
+    <div class="flex items-center gap-2 flex-1 min-w-0">
+      <span class="text-xs font-bold text-slate-400 shrink-0">Q<%= index + 1 %></span>
+      <p class="text-sm font-medium text-slate-800 dark:text-slate-100 leading-snug"><%= result_detail.question.prompt %></p>
+    </div>
+    <% if result_detail.is_correct %>
+      <span class="shrink-0 px-2 py-0.5 text-xs font-bold rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">正解</span>
+    <% else %>
+      <span class="shrink-0 px-2 py-0.5 text-xs font-bold rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">不正解</span>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-2 gap-2 text-xs">
+    <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+      <p class="text-slate-400 mb-0.5">あなたの回答</p>
+      <p class="font-bold text-slate-700 dark:text-slate-200"><%= side_label(result_detail.answer_side) %></p>
+    </div>
+    <div class="bg-slate-50 dark:bg-slate-800 rounded-lg p-2">
+      <p class="text-slate-400 mb-0.5">正解</p>
+      <p class="font-bold text-slate-700 dark:text-slate-200"><%= side_label(result_detail.question.correct_side) %></p>
+    </div>
+  </div>
+
+  <% if result_detail.elapsed_seconds.present? %>
+    <p class="text-xs text-slate-400 mt-2">所要時間: <%= result_detail.elapsed_seconds %>秒</p>
+  <% end %>
+
+  <%# 解説欄（暫定）: question.explanation が実装されたら差し替え %>
+  <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+    <p class="text-xs text-slate-400">
+      正解: <%= side_label(result_detail.question.correct_side) %>側
+      <% if result_detail.question.correct_amount.present? %>
+        ／ 金額: <%= number_with_delimiter(result_detail.question.correct_amount) %>円
+      <% end %>
+    </p>
+  </div>
+</div>

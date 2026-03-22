@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_22_010938) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_22_015300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,31 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_22_010938) do
     t.index ["course_id"], name: "index_questions_on_course_id"
   end
 
+  create_table "result_details", force: :cascade do |t|
+    t.bigint "result_id", null: false
+    t.bigint "question_id", null: false
+    t.string "answer_side", null: false
+    t.boolean "is_correct", default: false, null: false
+    t.integer "elapsed_seconds"
+    t.integer "score", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_result_details_on_question_id"
+    t.index ["result_id"], name: "index_result_details_on_result_id"
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "course_id", null: false
+    t.integer "total_score", default: 0, null: false
+    t.integer "correct_count", default: 0, null: false
+    t.integer "total_time_seconds", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_results_on_course_id"
+    t.index ["user_id"], name: "index_results_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -61,4 +86,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_22_010938) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "questions", "courses"
+  add_foreign_key "result_details", "questions"
+  add_foreign_key "result_details", "results"
+  add_foreign_key "results", "courses"
+  add_foreign_key "results", "users"
 end
