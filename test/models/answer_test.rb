@@ -41,4 +41,21 @@ class AnswerTest < ActiveSupport::TestCase
     assert answer.debit?
     assert_not answer.credit?
   end
+
+  test "valid without input_amount" do
+    answer = Answer.new(user: users(:one), question: questions(:one), selected_side: :debit)
+    assert answer.valid?
+  end
+
+  test "invalid with negative input_amount" do
+    answer = Answer.new(user: users(:one), question: questions(:one), selected_side: :debit, input_amount: -1)
+    assert_not answer.valid?
+    assert answer.errors[:input_amount].any?
+  end
+
+  test "invalid with non-integer input_amount" do
+    answer = Answer.new(user: users(:one), question: questions(:one), selected_side: :debit, input_amount: 1.5)
+    assert_not answer.valid?
+    assert answer.errors[:input_amount].any?
+  end
 end

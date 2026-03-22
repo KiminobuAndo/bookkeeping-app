@@ -4,6 +4,7 @@ correct_answer:
   user: one
   question: one
   selected_side: debit
+  input_amount: 100
 
 wrong_answer:
   user: one
