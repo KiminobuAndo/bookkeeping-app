@@ -1,0 +1,13 @@
+one:
+  result: one
+  question: one
+  answer_side: debit
+  is_correct: true
+  score: 5
+
+two:
+  result: one
+  question: two
+  answer_side: credit
+  is_correct: false
+  score: 0

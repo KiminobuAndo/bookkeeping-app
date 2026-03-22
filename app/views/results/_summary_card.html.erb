@@ -1,0 +1,41 @@
+<%# ローカル変数: result %>
+<% total_questions = result.result_details.size %>
+<% circumference = 552.92 %>
+<% offset = result.total_score > 0 ? circumference * (1 - result.total_score / 100.0) : circumference %>
+
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden mb-6">
+  <div class="p-8 flex flex-col items-center text-center">
+    <p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-2">試験結果</p>
+    <div class="relative flex items-center justify-center mb-4">
+      <svg class="size-48 transform -rotate-90">
+        <circle class="text-slate-100 dark:text-slate-800" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+        <circle class="text-secondary dark:text-primary" cx="96" cy="96" fill="transparent" r="88"
+          stroke="currentColor"
+          stroke-dasharray="<%= circumference %>"
+          stroke-dashoffset="<%= offset %>"
+          stroke-width="8"></circle>
+      </svg>
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <span class="text-slate-500 dark:text-slate-400 text-sm font-bold">点数</span>
+        <div class="flex items-baseline">
+          <span class="text-5xl font-bold text-secondary dark:text-white"><%= result.total_score %></span>
+          <span class="text-xl font-bold text-secondary dark:text-white ml-1">点</span>
+        </div>
+      </div>
+    </div>
+    <div class="bg-secondary/5 dark:bg-primary/10 rounded-lg px-4 py-2 mt-2">
+      <p class="text-secondary dark:text-primary font-bold">お疲れさまでした！</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 border-t border-slate-100 dark:border-slate-800">
+    <div class="p-4 text-center border-r border-slate-100 dark:border-slate-800">
+      <p class="text-slate-500 text-xs mb-1">正解数</p>
+      <p class="font-bold text-lg"><%= result.correct_count %> / <%= total_questions %></p>
+    </div>
+    <div class="p-4 text-center">
+      <p class="text-slate-500 text-xs mb-1">所要時間</p>
+      <p class="font-bold text-lg"><%= format_time(result.total_time_seconds) %></p>
+    </div>
+  </div>
+</div>
