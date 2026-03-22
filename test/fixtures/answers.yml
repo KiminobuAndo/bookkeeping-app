@@ -5,8 +5,10 @@ correct_answer:
   question: one
   selected_side: debit
   input_amount: 100
+  is_correct: true
 
 wrong_answer:
   user: one
   question: two
   selected_side: credit
+  is_correct: false

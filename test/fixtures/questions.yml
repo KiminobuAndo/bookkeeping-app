@@ -4,6 +4,7 @@ one:
   course: cash_course
   prompt: 商品を現金で購入した。現金は借方・貸方どちら？
   correct_side: debit
+  correct_amount: 100
 
 two:
   course: cash_course

@@ -10,4 +10,10 @@ class Answer < ApplicationRecord
   def correct?
     selected_side == question.correct_side
   end
+
+  def amount_correct?
+    return true if question.correct_amount.nil?
+
+    input_amount == question.correct_amount
+  end
 end
