@@ -10,3 +10,9 @@ two:
   course: cash_course
   prompt: 売上代金を現金で受け取った。現金は借方・貸方どちら？
   correct_side: debit
+
+cash_payment:
+  course: cash_course
+  prompt: 収入印紙 ¥2,700 と郵便切手 ¥450 を現金で購入し、すぐに使用した。現金は借方・貸方どちら？
+  correct_side: credit
+  correct_amount: 3150
