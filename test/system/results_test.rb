@@ -10,7 +10,7 @@ class ResultsTest < ApplicationSystemTestCase
     visit start_quiz_path(course_id: course.id)
 
     choose "answer[selected_side]", option: "debit"
-    click_button "回答すめE"
+    click_button "回答する"
 
     assert_current_path result_path(Result.last)
     assert_text "試験結果"
@@ -24,7 +24,7 @@ class ResultsTest < ApplicationSystemTestCase
     sign_in_as(user)
     visit start_quiz_path(course_id: course.id)
     choose "answer[selected_side]", option: "debit"
-    click_button "回答すめE"
+    click_button "回答する"
 
     result = Result.last
     assert_text result.total_score.to_s
@@ -39,9 +39,9 @@ class ResultsTest < ApplicationSystemTestCase
     sign_in_as(user)
     visit start_quiz_path(course_id: course.id)
     choose "answer[selected_side]", option: "debit"
-    click_button "回答すめE"
+    click_button "回答する"
 
-    click_on "トップに戻めE"
+    click_on "トップに戻る"
     assert_current_path dashboard_path
   end
 
@@ -58,7 +58,7 @@ class ResultsTest < ApplicationSystemTestCase
 
     10.times do
       choose "answer[selected_side]", option: "debit"
-      click_button "回答すめE"
+      click_button "回答する"
     end
 
     result = Result.last
@@ -71,7 +71,7 @@ class ResultsTest < ApplicationSystemTestCase
   def sign_in_as(user)
     visit new_user_session_path
     fill_in "メールアドレス", with: user.email
-    fill_in "パスワーチE", with: "password"
+    fill_in "パスワード", with: "password"
     click_button "ログイン"
     assert_current_path dashboard_path
   end
