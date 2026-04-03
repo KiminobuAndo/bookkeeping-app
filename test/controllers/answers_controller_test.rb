@@ -21,21 +21,21 @@ class AnswersControllerTest < ActionDispatch::IntegrationTest
     post answers_path, params: {
       answer: { question_id: @question.id, selected_side: "debit", input_amount: 100 }
     }
-    assert_equal true, Answer.last.is_correct
+    assert Answer.last.is_correct
   end
 
   test "create saves is_correct false for wrong side" do
     post answers_path, params: {
       answer: { question_id: @question.id, selected_side: "credit", input_amount: 100 }
     }
-    assert_equal false, Answer.last.is_correct
+    assert_not Answer.last.is_correct
   end
 
   test "create saves is_correct false for wrong amount" do
     post answers_path, params: {
       answer: { question_id: @question.id, selected_side: "debit", input_amount: 999 }
     }
-    assert_equal false, Answer.last.is_correct
+    assert_not Answer.last.is_correct
   end
 
   test "create without selected_side renders question show" do
