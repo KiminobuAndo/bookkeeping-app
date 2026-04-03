@@ -12,8 +12,8 @@ A Rails web app for bookkeeping (簿記) learners to practice identifying whethe
 - **PostgreSQL** 17 (dev runs on port 5433 via Docker)
 - **Hotwire** (Turbo + Stimulus) for frontend interactivity
 - **TailwindCSS** 4 + **esbuild** for assets
-- **Devise** (planned) for authentication
-- **Minitest** + Capybara/Selenium for system tests (no RSpec yet)
+- **Devise** for authentication
+- **Minitest** + Capybara/Selenium for system tests (no RSpec)
 
 ## Development Environment
 
@@ -54,23 +54,61 @@ yarn build:css      # CSS via Tailwind CLI
 
 ## Architecture
 
-The app is early-stage. Current structure:
+### Request Flow
 
-- **`HomeController#index`** serves the root (`/`)
-- **`PostsController`** (scaffold stub, not yet domain-relevant)
-- Models, controllers, and views for the core domain (courses, questions, results, users) are not yet implemented
+```
+GET /              → HomeController#index       (public, no auth)
+GET /dashboard     → DashboardController#index  (auth required)
+POST /dashboard/start_quiz → DashboardController#start_quiz
+  └─ creates Result record, stores question_ids in session
+GET /questions/:id → QuestionsController#show
+POST /answers      → AnswersController#create   (grades, advances quiz)
+GET /results/:id   → ResultsController#show
+```
 
-### Planned Domain Models (from README)
-- `User` — authentication via Devise
-- `Course` — groups of questions (MVP: one course)
-- `Question` — individual journal entry problems with a correct debit/credit answer
-- `Result` — session-level score (10 questions, 100-point scale)
-- `ResultDetail` — per-question log (answer, correctness, elapsed seconds, score)
+All controllers except `HomeController` require authentication via `before_action :authenticate_user!` in `ApplicationController`.
 
-### Scoring Logic
-Each question has a 10-second timer. Points per question:
-- 0–5 sec correct: 5pts | 6s: 4pts | 7s: 3pts | 8s: 2pts | 9s: 1pt | 10s or wrong: 0pts
-- Total (max 50) × 2 = 100-point score
+### Domain Models
+
+| Model | Key Fields | Notes |
+|-------|-----------|-------|
+| `User` | name (≤50), email | Devise auth |
+| `Course` | name, description, is_published | Quiz container |
+| `Question` | prompt, correct_side (enum: debit/credit), correct_amount | `correct_amount` is optional |
+| `Answer` | selected_side (enum), input_amount, is_correct | User's single response |
+| `Result` | total_score, correct_count, total_time_seconds | Session-level aggregate |
+| `ResultDetail` | answer_side (enum), is_correct, score, elapsed_seconds | Per-question log |
+
+### Quiz Session Flow
+
+`DashboardController#start_quiz` selects 10 random questions from the course, creates a `Result` record, and stores `question_ids` + `current_index` in `session`. Each `AnswersController#create` call grades the answer via `AnswerGrader` service, creates an `Answer` and `ResultDetail`, then either advances to the next question or redirects to `ResultsController#show` when all 10 are answered.
+
+### Grading Logic (`app/services/answer_grader.rb`)
+
+Correct when `selected_side == correct_side` AND (`input_amount == correct_amount` OR `correct_amount.nil?`).
+
+**Note:** Time-based scoring (0–5s=5pts, 6s=4pts … 10s/wrong=0pts) is defined in schema (`result_details.score`) but the timer JavaScript is not yet implemented. Currently, correct answers receive a fixed 5 points (max 50 → ×2 = 100-point scale).
+
+### What Is NOT Yet Implemented
+
+- Per-question countdown timer (JavaScript Stimulus controller)
+- Countdown before quiz start (3→2→1)
+- Real user activity feed (dashboard shows hardcoded placeholders)
+- Admin panel for question/course CRUD
+- Account settings / bottom nav (UI exists but links are non-functional)
+
+### Internationalization
+
+`config/application.rb` sets `i18n.default_locale = :ja`. All UI labels and validation messages are in Japanese.
+
+### Tests
+
+- **System tests** (`test/system/`): full flows via Capybara/Selenium (auth, dashboard, questions, results)
+- **Controller tests** (`test/controllers/`): `AnswersController`, `ResultsController`
+- **Model tests** (`test/models/`): validations for all 6 domain models
+- **Service tests** (`test/services/answer_grader_test.rb`): comprehensive grading scenarios
+- Fixtures in `test/fixtures/` (YAML). BCrypt password hashing configured in `test_helper.rb`.
+- Capybara uses headless Chrome locally, remote Chrome in CI.
 
 ## CI
 
